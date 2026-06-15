@@ -1,26 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Painel Administrativo - Gestão de Colaboradores', () => {
-
-  test.beforeEach(async ({ page }) => {
+test('CT08 - deve editar colaborador alterando apenas o cargo', async ({ page }) => {
     await page.goto('http://localhost:8000');
-    
-    await page.getByRole('textbox', { name: 'CPF' })
-      .fill('00000000000');
-      
-    await page.getByRole('textbox', { name: 'Senha' })
-      .fill('senha123');
-      
-    await page.getByRole('button', { name: 'Entrar' })
-      .click();
 
-    await page.locator('a:has-text("Painel Administrativo")')
-      .click();
+    await page.getByRole('textbox', { name: 'CPF' }).fill('00000000000');
 
-    await expect(page).toHaveURL(/.*\/admin/);
-  });
+    await page.getByRole('textbox', { name: 'Senha' }).fill('novaSenha123');
 
-  test('CT08 - deve editar colaborador alterando apenas o cargo', async ({ page }) => {
+    await page.getByRole('button', { name: 'Entrar' }).click();
+
+    await expect(page.locator('body')).toContainText('Olá, Administrador!');
+
+    await page.locator('a:has-text("Painel Administrativo")').click();
+
     await page.getByRole('link', { name: 'Colaboradores' }).click();
 
     await page.locator('a[title="Editar"]').first().click();
@@ -33,8 +25,5 @@ test.describe('Painel Administrativo - Gestão de Colaboradores', () => {
 
     await page.getByRole('button', { name: 'Salvar Alterações' }).click();
 
-    await expect(page.locator('body'))
-      .toContainText('Colaborador atualizado com sucesso!');
-  });
-
+    await expect(page.locator('body')).toContainText('Colaborador atualizado com sucesso!');
 });

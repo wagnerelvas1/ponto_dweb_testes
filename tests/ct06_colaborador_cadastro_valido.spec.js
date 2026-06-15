@@ -1,28 +1,19 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Painel Administrativo - Gestão de Colaboradores', () => {
-
-  test.beforeEach(async ({ page }) => {
+test('CT06 - deve cadastrar colaborador com valores válidos', async ({ page }) => {
     await page.goto('http://localhost:8000');
-    
-    await page.getByRole('textbox', { name: 'CPF' })
-      .fill('00000000000');
-      
-    await page.getByRole('textbox', { name: 'Senha' })
-      .fill('senha123');
-      
-    await page.getByRole('button', { name: 'Entrar' })
-      .click();
 
-    await page.locator('a:has-text("Painel Administrativo")')
-      .click();
+    await page.getByRole('textbox', { name: 'CPF' }).fill('00000000000');
 
-    await expect(page).toHaveURL(/.*\/admin/);
-  });
+    await page.getByRole('textbox', { name: 'Senha' }).fill('novaSenha123');
 
-  test('CT06 - deve cadastrar colaborador com valores válidos', async ({ page }) => {
+    await page.getByRole('button', { name: 'Entrar' }).click();
+
+    await expect(page.locator('body')).toContainText('Olá, Administrador!');
+
+    await page.locator('a:has-text("Painel Administrativo")').click();
+
     await page.getByRole('link', { name: 'Colaboradores' }).click();
-
     await page.getByRole('button', { name: 'Novo Colaborador' }).click();
 
     const randomDigit = () => Math.floor(Math.random() * 10);
@@ -39,11 +30,7 @@ test.describe('Painel Administrativo - Gestão de Colaboradores', () => {
 
     await page.locator('#submit-modal_novo_colaborador').click();
 
-    await expect(page.locator('body'))
-      .toContainText('Colaborador cadastrado com sucesso!');
+    await expect(page.locator('body')).toContainText('Colaborador cadastrado com sucesso!');
 
-    await expect(page.locator('table'))
-      .toContainText(colaboradorNome);
-  });
-
+    await expect(page.locator('table')).toContainText(colaboradorNome);
 });
