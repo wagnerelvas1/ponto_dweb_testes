@@ -24,7 +24,7 @@ npm init playwright@latest
 
 *(Se o projeto já estiver inicializado, você também pode instalar as dependências declaradas executando `npm install`).*
 
-### 3. Preparação do Banco de Dados (Projeto "marcação")
+### 3. Preparação do Banco de Dados (Projeto "Ponto Fácil")
 
 Para garantir que o banco de dados contenha os dados necessários para a execução dos testes, acesse o diretório do projeto **`Ponto Fácil`** e execute:
 
